@@ -6,7 +6,6 @@
 package br.com.bigwolf.app;
 
 import br.com.bigwolf.util.ArvoreBinaria;
-import br.com.bigwolf.util.No;
 
 /**
  *
@@ -32,7 +31,9 @@ public class App {
         arvore.inserir(2, "Cidade K");
         arvore.inserir(73, "Cidade L");
         
-        System.out.println(arvore.buscar(110));
+        arvore.remover(15);
+        
+        arvore.imprimirTodosCrescente(arvore.buscar(50));
     }
     
 }

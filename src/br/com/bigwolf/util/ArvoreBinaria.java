@@ -32,8 +32,8 @@ public class ArvoreBinaria<T, K extends Comparable<K>> implements iArvores<T, K>
     public No<T, K> buscar(K chave) {
         No<T, K> noAtual = this.raiz;
 
-        while (noAtual.getChave().compareTo(chave) != 0) {
-            if (noAtual.getChave().compareTo(chave) < 0) {
+        while (!noAtual.getChave().equals(chave)) {
+            if (chave.compareTo(noAtual.getChave()) < 0) {
                 noAtual = noAtual.getFilhos()[0];
             } else {
                 noAtual = noAtual.getFilhos()[1];
@@ -42,7 +42,6 @@ public class ArvoreBinaria<T, K extends Comparable<K>> implements iArvores<T, K>
                 return null;
             }
         }
-        System.out.println(noAtual.getElemento());
         return noAtual;
     }
 
@@ -62,12 +61,14 @@ public class ArvoreBinaria<T, K extends Comparable<K>> implements iArvores<T, K>
                 if (chave.compareTo(noAtual.getChave()) < 0) {
                     noAtual = noAtual.getFilhos()[0];
                     if (noAtual == null) {
+                        noNovo.setPai(noPrimo);
                         noPrimo.getFilhos()[0] = noNovo;
                         return;
                     }
                 } else {
                     noAtual = noAtual.getFilhos()[1];
                     if (noAtual == null) {
+                        noNovo.setPai(noPrimo);
                         noPrimo.getFilhos()[1] = noNovo;
                         return;
                     }
@@ -78,16 +79,54 @@ public class ArvoreBinaria<T, K extends Comparable<K>> implements iArvores<T, K>
 
     @Override
     public void imprimir(K chave) {
-        No<T, K> noAtual = buscar(chave);
-        
+        No<T, K> noAtual = this.raiz;
+
+        while (!noAtual.getChave().equals(chave)) {
+            if (chave.compareTo(noAtual.getChave()) < 0) {
+                noAtual = noAtual.getFilhos()[0];
+            } else {
+                noAtual = noAtual.getFilhos()[1];
+            }
+            if (noAtual == null) {
+                System.out.println("Elemento não encontrado!");
+            }
+        }
+        System.out.println(noAtual.getElemento());
+    }
+
+    @Override
+    public void imprimirTodosCrescente(No<T, K> noAtual) {
         if (noAtual != null) {
-            if(noAtual.getFilhos()[0] != null){
-                imprimir(noAtual.getFilhos()[0].getChave());
+            imprimirTodosCrescente(noAtual.getFilhos()[0]);
+            System.out.print(noAtual.getElemento() + " - " + noAtual.getChave() + "\n");
+            imprimirTodosCrescente(noAtual.getFilhos()[1]);
+        }
+    }
+
+    @Override
+    public void remover(K chave) {
+        No<T, K> noRemove = buscar(chave);
+
+        if (noRemove.getFilhos()[0] == null && noRemove.getFilhos()[1] == null) {
+            if (noRemove.getPai().getFilhos()[0] != null) {
+                if (noRemove.getPai().getFilhos()[0].equals(noRemove)) {
+                    noRemove.getPai().getFilhos()[0] = null;
+                } 
+            }else{
+                noRemove.getPai().getFilhos()[1] = null;
             }
-            if(noAtual.getFilhos()[0] != null){
-                imprimir(noAtual.getFilhos()[1].getChave());
+        } else if (noRemove.getPai().getFilhos()[0].equals(noRemove)) {
+            if (noRemove.getFilhos()[0] != null) {
+                noRemove.getPai().getFilhos()[0] = noRemove.getFilhos()[0];
+            } else {
+                noRemove.getPai().getFilhos()[0] = noRemove.getFilhos()[1];
             }
-            System.out.println(noAtual.getElemento());
-        }       
+        } else if (noRemove.getPai().getFilhos()[1].equals(noRemove)) {
+            if (noRemove.getFilhos()[1] != null) {
+                noRemove.getPai().getFilhos()[1] = noRemove.getFilhos()[1];
+            } else {
+                noRemove.getPai().getFilhos()[1] = noRemove.getFilhos()[0];
+            }
+        }
     }
 }

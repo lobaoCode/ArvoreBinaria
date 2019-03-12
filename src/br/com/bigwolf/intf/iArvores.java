@@ -18,5 +18,7 @@ public interface iArvores<T,K extends Comparable<K>> {
     public void inserir(K chave, T elemento);
     public No<T,K> buscar(K chave);
     public void imprimir(K chave);
+    public void imprimirTodosCrescente(No<T,K> noAtual);
+    public void remover(K chave);
     
 }
