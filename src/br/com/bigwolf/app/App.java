@@ -31,7 +31,7 @@ public class App {
         arvore.inserir(2, "Cidade K");
         arvore.inserir(73, "Cidade L");
         
-        arvore.remover(15);
+        arvore.remover(56);
         
         arvore.imprimirTodosCrescente(arvore.buscar(50));
     }
