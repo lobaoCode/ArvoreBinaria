@@ -104,29 +104,76 @@ public class ArvoreBinaria<T, K extends Comparable<K>> implements iArvores<T, K>
     }
 
     @Override
-    public void remover(K chave) {
-        No<T, K> noRemove = buscar(chave);
-
-        if (noRemove.getFilhos()[0] == null && noRemove.getFilhos()[1] == null) {
-            if (noRemove.getPai().getFilhos()[0] != null) {
-                if (noRemove.getPai().getFilhos()[0].equals(noRemove)) {
-                    noRemove.getPai().getFilhos()[0] = null;
-                } 
-            }else{
-                noRemove.getPai().getFilhos()[1] = null;
-            }
-        } else if (noRemove.getPai().getFilhos()[0].equals(noRemove)) {
-            if (noRemove.getFilhos()[0] != null) {
-                noRemove.getPai().getFilhos()[0] = noRemove.getFilhos()[0];
-            } else {
-                noRemove.getPai().getFilhos()[0] = noRemove.getFilhos()[1];
-            }
-        } else if (noRemove.getPai().getFilhos()[1].equals(noRemove)) {
-            if (noRemove.getFilhos()[1] != null) {
-                noRemove.getPai().getFilhos()[1] = noRemove.getFilhos()[1];
-            } else {
-                noRemove.getPai().getFilhos()[1] = noRemove.getFilhos()[0];
-            }
+    public boolean remover(K chave) {
+        if (raiz == null) {
+            return false;
         }
+        No<T, K> noRemover = buscar(chave);
+        if (noRemover == null) {
+            return false;
+        }
+
+        if (noRemover.getFilhos()[0] == null && noRemover.getFilhos()[1] == null) {
+            if (noRemover == raiz) {
+                raiz = null; // se raiz
+            } else if (noRemover.getPai().getFilhos()[0].equals(noRemover)) {
+                noRemover.getPai().getFilhos()[0] = null;
+            } else {
+                noRemover.getPai().getFilhos()[1] = null;
+            }
+        } else if (noRemover.getFilhos()[1] == null) {
+            if (noRemover == raiz) {
+                raiz = noRemover.getFilhos()[0];
+            } else if (noRemover.getPai().getFilhos()[0].equals(noRemover)) {
+                noRemover.getPai().getFilhos()[0] = noRemover.getFilhos()[0];
+                noRemover.getFilhos()[0].setPai(noRemover.getPai());
+            } else {
+                noRemover.getPai().getFilhos()[1] = noRemover.getFilhos()[0];
+            }
+        } else if (noRemover.getFilhos()[0] == null) {
+            if (noRemover == raiz) {
+                raiz = noRemover.getFilhos()[1];
+            } else if (noRemover.getPai().getFilhos()[0].equals(noRemover)) {
+                noRemover.getPai().getFilhos()[0] = noRemover.getFilhos()[1];
+                noRemover.getFilhos()[1].setPai(noRemover.getPai());
+            } else {
+                noRemover.getPai().getFilhos()[1] = noRemover.getFilhos()[1];
+                noRemover.getFilhos()[1].setPai(noRemover.getPai());
+            }
+        } else {
+            No<T, K> herdeiro = herdeiro(noRemover);
+
+            if (noRemover == raiz) {
+                raiz = herdeiro;
+            } else if (noRemover.getPai().getFilhos()[0].equals(noRemover)) {
+                noRemover.getPai().getFilhos()[0] = herdeiro;
+                herdeiro.setPai(noRemover.getPai());
+            } else {
+                noRemover.getPai().getFilhos()[1] = herdeiro;
+                herdeiro.setPai(noRemover.getPai());
+            }
+            herdeiro.getFilhos()[1] = noRemover.getFilhos()[1];
+        }
+
+        return true;
     }
+
+    @Override
+    public No<T, K> herdeiro(No<T, K> no) {
+        No<T, K> paiHerdeiro = no;
+        No<T, K> herdeiro = no;
+        No<T, K> noAtual = no.getFilhos()[1];
+
+        while (noAtual != null) {
+            paiHerdeiro = herdeiro;
+            herdeiro = noAtual;
+            noAtual = noAtual.getFilhos()[0];
+        }
+        if (herdeiro != no.getFilhos()[1]) {
+            paiHerdeiro.getFilhos()[1] = herdeiro.getFilhos()[1];
+            herdeiro.getFilhos()[1] = no.getFilhos()[1];
+        }
+        return herdeiro;
+    }
+
 }
