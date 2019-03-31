@@ -12,12 +12,11 @@ import br.com.bigwolf.util.ArvoreBinaria;
  * @author 1161151394
  */
 public class App {
-    
+
     public static void main(String[] args) {
-        
-        
+
         ArvoreBinaria arvore = new ArvoreBinaria();
-        
+
         arvore.inserir(50, "Cidade A");
         arvore.inserir(110, "Cidade B");
         arvore.inserir(15, "Cidade C");
@@ -30,10 +29,13 @@ public class App {
         arvore.inserir(44, "Cidade J");
         arvore.inserir(2, "Cidade K");
         arvore.inserir(73, "Cidade L");
-        
-        arvore.remover(130);
-        
+
+        arvore.remover(15);
+
         arvore.imprimirTodosCrescente(arvore.buscar(50));
+
+      
+
     }
-    
+
 }
