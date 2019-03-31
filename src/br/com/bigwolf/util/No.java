@@ -25,6 +25,7 @@ public class No<T,K extends Comparable<K>> implements Comparable<K>{
     private K chave;
     private No<T,K>[] filhos;
     private No<T,K> pai;
+    private boolean esquerda;
     
     public No(){
         this.filhos = new No[2];
@@ -96,6 +97,20 @@ public class No<T,K extends Comparable<K>> implements Comparable<K>{
     @Override
     public int compareTo(K o) {
         return this.chave.compareTo(o);
+    }
+
+    /**
+     * @return the esquerda
+     */
+    public boolean isEsquerda() {
+        return esquerda;
+    }
+
+    /**
+     * @param esquerda the esquerda to set
+     */
+    public void setEsquerda(boolean esquerda) {
+        this.esquerda = esquerda;
     }
 
 
