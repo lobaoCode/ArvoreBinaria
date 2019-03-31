@@ -33,10 +33,13 @@ public class ArvoreBinaria<T, K extends Comparable<K>> implements iArvores<T, K>
         No<T, K> noAtual = this.raiz;
 
         while (!noAtual.getChave().equals(chave)) {
+            
             if (chave.compareTo(noAtual.getChave()) < 0) {
                 noAtual = noAtual.getFilhos()[0];
+                noAtual.setEsquerda(true);
             } else {
                 noAtual = noAtual.getFilhos()[1];
+                noAtual.setEsquerda(false);
             }
             if (noAtual == null) {
                 return null;
@@ -116,7 +119,7 @@ public class ArvoreBinaria<T, K extends Comparable<K>> implements iArvores<T, K>
         if (noRemover.getFilhos()[0] == null && noRemover.getFilhos()[1] == null) {
             if (noRemover == raiz) {
                 raiz = null; // se raiz
-            } else if (noRemover.getPai().getFilhos()[0].equals(noRemover)) {
+            } else if (noRemover.isEsquerda()) {
                 noRemover.getPai().getFilhos()[0] = null;
             } else {
                 noRemover.getPai().getFilhos()[1] = null;
@@ -124,35 +127,37 @@ public class ArvoreBinaria<T, K extends Comparable<K>> implements iArvores<T, K>
         } else if (noRemover.getFilhos()[1] == null) {
             if (noRemover == raiz) {
                 raiz = noRemover.getFilhos()[0];
-            } else if (noRemover.getPai().getFilhos()[0].equals(noRemover)) {
+            } else if (noRemover.isEsquerda()) {
                 noRemover.getPai().getFilhos()[0] = noRemover.getFilhos()[0];
-                noRemover.getFilhos()[0].setPai(noRemover.getPai());
+                //noRemover.getPai().getFilhos()[0].setPai(noRemover.getPai());
+                
             } else {
                 noRemover.getPai().getFilhos()[1] = noRemover.getFilhos()[0];
+                //noRemover.getPai().getFilhos()[1].setPai(noRemover.getPai());
             }
         } else if (noRemover.getFilhos()[0] == null) {
             if (noRemover == raiz) {
                 raiz = noRemover.getFilhos()[1];
-            } else if (noRemover.getPai().getFilhos()[0].equals(noRemover)) {
+            } else if (noRemover.isEsquerda()) {
                 noRemover.getPai().getFilhos()[0] = noRemover.getFilhos()[1];
-                noRemover.getFilhos()[1].setPai(noRemover.getPai());
+                //noRemover.getPai().getFilhos()[0].setPai(noRemover.getPai());
             } else {
                 noRemover.getPai().getFilhos()[1] = noRemover.getFilhos()[1];
-                noRemover.getFilhos()[1].setPai(noRemover.getPai());
+                //noRemover.getPai().getFilhos()[1].setPai(noRemover.getPai());
             }
         } else {
             No<T, K> herdeiro = herdeiro(noRemover);
 
             if (noRemover == raiz) {
                 raiz = herdeiro;
-            } else if (noRemover.getPai().getFilhos()[0].equals(noRemover)) {
+            } else if (noRemover.isEsquerda()) {
                 noRemover.getPai().getFilhos()[0] = herdeiro;
-                herdeiro.setPai(noRemover.getPai());
+                //noRemover.getPai().getFilhos()[0].setPai(herdeiro.getPai());
             } else {
                 noRemover.getPai().getFilhos()[1] = herdeiro;
-                herdeiro.setPai(noRemover.getPai());
+                //noRemover.getPai().getFilhos()[1].setPai(herdeiro.getPai());
             }
-            herdeiro.getFilhos()[1] = noRemover.getFilhos()[1];
+            herdeiro.getFilhos()[0] = noRemover.getFilhos()[0];
         }
 
         return true;
@@ -170,7 +175,7 @@ public class ArvoreBinaria<T, K extends Comparable<K>> implements iArvores<T, K>
             noAtual = noAtual.getFilhos()[0];
         }
         if (herdeiro != no.getFilhos()[1]) {
-            paiHerdeiro.getFilhos()[1] = herdeiro.getFilhos()[1];
+            paiHerdeiro.getFilhos()[0] = herdeiro.getFilhos()[1];
             herdeiro.getFilhos()[1] = no.getFilhos()[1];
         }
         return herdeiro;
