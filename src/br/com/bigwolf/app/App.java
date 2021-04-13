@@ -15,7 +15,7 @@ public class App {
 
     public static void main(String[] args) {
 
-        ArvoreBinaria arvore = new ArvoreBinaria();
+        ArvoreBinaria<String, Integer> arvore = new ArvoreBinaria<String, Integer>();
 
         arvore.inserir(50, "Cidade A");
         arvore.inserir(110, "Cidade B");
@@ -29,13 +29,15 @@ public class App {
         arvore.inserir(44, "Cidade J");
         arvore.inserir(2, "Cidade K");
         arvore.inserir(73, "Cidade L");
-
         arvore.remover(15);
 
         arvore.imprimirTodosCrescente(arvore.buscar(50));
 
-      
+        System.out.println(arvore.altura(arvore.raiz));
+        System.out.println(arvore.quantidade(arvore.raiz));
 
+
+        System.out.println(arvore.profundidade(arvore.buscar(110)));
     }
 
 }

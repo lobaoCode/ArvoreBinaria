@@ -15,11 +15,9 @@ import br.com.bigwolf.intf.iArvores;
  */
 public class ArvoreBinaria<T, K extends Comparable<K>> implements iArvores<T, K> {
 
-    private No<T, K> raiz;
-    private No<T, K>[] filhos;
+    public No<T, K> raiz;
 
     public ArvoreBinaria() {
-        filhos = new No[2];
         raiz = null;
     }
 
@@ -40,9 +38,6 @@ public class ArvoreBinaria<T, K extends Comparable<K>> implements iArvores<T, K>
             } else {
                 noAtual = noAtual.getFilhos()[1];
                 noAtual.setEsquerda(false);
-            }
-            if (noAtual == null) {
-                return null;
             }
         }
         return noAtual;
@@ -101,7 +96,7 @@ public class ArvoreBinaria<T, K extends Comparable<K>> implements iArvores<T, K>
     public void imprimirTodosCrescente(No<T, K> noAtual) {
         if (noAtual != null) {
             imprimirTodosCrescente(noAtual.getFilhos()[0]);
-            System.out.print(noAtual.getElemento() + " - " + noAtual.getChave() + "\n");
+            System.out.print(noAtual.getElemento() + " - " + noAtual.getChave() + " !!! nivel: " + noAtual.nivel + " altura: " + altura(noAtual) + " \n");
             imprimirTodosCrescente(noAtual.getFilhos()[1]);
         }
     }
@@ -129,21 +124,17 @@ public class ArvoreBinaria<T, K extends Comparable<K>> implements iArvores<T, K>
                 raiz = noRemover.getFilhos()[0];
             } else if (noRemover.isEsquerda()) {
                 noRemover.getPai().getFilhos()[0] = noRemover.getFilhos()[0];
-                //noRemover.getPai().getFilhos()[0].setPai(noRemover.getPai());
                 
             } else {
                 noRemover.getPai().getFilhos()[1] = noRemover.getFilhos()[0];
-                //noRemover.getPai().getFilhos()[1].setPai(noRemover.getPai());
             }
         } else if (noRemover.getFilhos()[0] == null) {
             if (noRemover == raiz) {
                 raiz = noRemover.getFilhos()[1];
             } else if (noRemover.isEsquerda()) {
                 noRemover.getPai().getFilhos()[0] = noRemover.getFilhos()[1];
-                //noRemover.getPai().getFilhos()[0].setPai(noRemover.getPai());
             } else {
                 noRemover.getPai().getFilhos()[1] = noRemover.getFilhos()[1];
-                //noRemover.getPai().getFilhos()[1].setPai(noRemover.getPai());
             }
         } else {
             No<T, K> herdeiro = herdeiro(noRemover);
@@ -152,10 +143,8 @@ public class ArvoreBinaria<T, K extends Comparable<K>> implements iArvores<T, K>
                 raiz = herdeiro;
             } else if (noRemover.isEsquerda()) {
                 noRemover.getPai().getFilhos()[0] = herdeiro;
-                //noRemover.getPai().getFilhos()[0].setPai(herdeiro.getPai());
             } else {
                 noRemover.getPai().getFilhos()[1] = herdeiro;
-                //noRemover.getPai().getFilhos()[1].setPai(herdeiro.getPai());
             }
             herdeiro.getFilhos()[0] = noRemover.getFilhos()[0];
         }
@@ -179,6 +168,45 @@ public class ArvoreBinaria<T, K extends Comparable<K>> implements iArvores<T, K>
             herdeiro.getFilhos()[1] = no.getFilhos()[1];
         }
         return herdeiro;
+    }
+
+    @Override
+    public int altura(No<T,K> no) {
+        if (no == null) {
+            return -1;
+        } else {
+            int alturaEsquerda = altura(no.getFilhos()[0]);
+            int alturaDireita = altura(no.getFilhos()[1]);
+            if (alturaEsquerda < alturaDireita) return alturaDireita + 1;
+            else return alturaEsquerda + 1;
+        }
+    }
+
+    @Override
+    public int quantidade(No<T, K> no) {
+        return (no == null) ? 0 : 1 + quantidade(no.getFilhos()[0]) + quantidade(no.getFilhos()[1]);
+    }
+
+    @Override
+    public int grau(No<T, K> no) {
+        int grau = 0;
+        if (no != null) {
+            if(no.getFilhos()[0] != null)
+                grau++;
+            
+            if(no.getFilhos()[1] != null)
+                grau++;
+        }
+        return grau;
+    }
+
+    @Override
+    public int profundidade(No<T, K> no) {
+        int profundidade = 0;
+        if (no.getPai() != null) {
+            return 1 + profundidade(no.getPai());
+        }
+        return profundidade;
     }
 
 }
