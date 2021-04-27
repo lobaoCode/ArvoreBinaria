@@ -259,16 +259,19 @@ public class ArvoreBinaria<T extends Comparable<T>, K extends Comparable<K>> imp
 
 	@Override
 	public void imprimirMaiores() {
-		imprimirMaiores(raiz.getFilhos()[0]);
+		imprimirMaiores(raiz);
 		System.out.println();
 	}
 	
 	private void imprimirMaiores(No<T,K> raiz) {
+		No<T,K> maiorFilho = null;
 		if (raiz.getFilhos()[0] != null && raiz.getFilhos()[0].getElemento().compareTo(raiz.getFilhos()[0].getElemento()) > 1) {
+			maiorFilho = raiz.getFilhos()[0];
 			imprimirMaiores(raiz.getFilhos()[0]);
 		} else if (raiz.getFilhos()[1] != null) {
+			maiorFilho = raiz.getFilhos()[1];
 			imprimirMaiores(raiz.getFilhos()[1]);
 		}
-		System.out.print(raiz.getElemento() + " ");
+		System.out.println("No pai: " + raiz.getElemento() + " No maior Filho: " + (maiorFilho == null ? "Sem Filho" : maiorFilho.getElemento()));
 	}
 }

@@ -31,8 +31,10 @@ public class App {
         arvore.inserir(73, "Cidade L");
         arvore.remover(15);
 
+        arvore.imprimirMaiores();
+        
         arvore.imprimirTodosCrescente(arvore.buscar(50));
-
+        
         System.out.println(arvore.altura(arvore.raiz));
         System.out.println(arvore.quantidade(arvore.raiz));
 
