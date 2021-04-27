@@ -29,7 +29,6 @@ public class App {
         arvore.inserir(44, "Cidade J");
         arvore.inserir(2, "Cidade K");
         arvore.inserir(73, "Cidade L");
-        arvore.remover(15);
 
         arvore.imprimirMaiores();
         
