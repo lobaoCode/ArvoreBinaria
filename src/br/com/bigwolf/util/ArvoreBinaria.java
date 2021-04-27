@@ -13,7 +13,7 @@ import br.com.bigwolf.intf.iArvores;
  * @param <T>
  * @param <K>
  */
-public class ArvoreBinaria<T, K extends Comparable<K>> implements iArvores<T, K> {
+public class ArvoreBinaria<T extends Comparable<T>, K extends Comparable<K>> implements iArvores<T, K> {
 
     public No<T, K> raiz;
 
@@ -209,4 +209,66 @@ public class ArvoreBinaria<T, K extends Comparable<K>> implements iArvores<T, K>
         return profundidade;
     }
 
+	@Override
+	public void imprimirPosOrdem() {
+		imprimirPosOrdem(raiz);
+		System.out.println();
+	}
+	
+	private void imprimirPosOrdem (No raiz) {
+		if (raiz.getFilhos()[0] != null) {
+			imprimirPosOrdem(raiz.getFilhos()[0]);
+		} 
+		if (raiz.getFilhos()[1] != null) {
+			imprimirPosOrdem(raiz.getFilhos()[1]);
+		}
+		System.out.print(raiz.getElemento() + " ");
+	}
+
+	@Override
+	public void imprimirPreOrdem() {
+		imprimirPreOrdem(raiz);
+		System.out.println();
+	}
+	
+	private void imprimirPreOrdem (No raiz) {
+		System.out.print(raiz.getElemento() + " ");
+		if (raiz.getFilhos()[0] != null) {
+			imprimirPreOrdem(raiz.getFilhos()[0]);
+		} 
+		if (raiz.getFilhos()[1] != null) {
+			imprimirPreOrdem(raiz.getFilhos()[1]);
+		}
+	}
+
+	@Override
+	public void imprimirInOrdem() {
+		imprimirInOrdem(raiz);
+		System.out.println();
+	}
+	
+	private void imprimirInOrdem(No raiz) {
+		if (raiz.getFilhos()[0] != null) {
+			imprimirInOrdem(raiz.getFilhos()[0]);
+		}
+		System.out.print(raiz.getElemento() + " ");
+		if (raiz.getFilhos()[1] != null) {
+			imprimirInOrdem(raiz.getFilhos()[1]);
+		}
+	}
+
+	@Override
+	public void imprimirMaiores() {
+		imprimirMaiores(raiz.getFilhos()[0]);
+		System.out.println();
+	}
+	
+	private void imprimirMaiores(No<T,K> raiz) {
+		if (raiz.getFilhos()[0] != null && raiz.getFilhos()[0].getElemento().compareTo(raiz.getFilhos()[0].getElemento()) > 1) {
+			imprimirMaiores(raiz.getFilhos()[0]);
+		} else if (raiz.getFilhos()[1] != null) {
+			imprimirMaiores(raiz.getFilhos()[1]);
+		}
+		System.out.print(raiz.getElemento() + " ");
+	}
 }

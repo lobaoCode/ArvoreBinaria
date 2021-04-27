@@ -5,15 +5,9 @@
  */
 package br.com.bigwolf.intf;
 
-import br.com.bigwolf.util.ArvoreBinaria;
 import br.com.bigwolf.util.No;
 
-/**
- *
- * @author 1161151394
- * @param <T>
- * @param <K>
- */
+
 public interface iArvores<T,K extends Comparable<K>> {
     
     public void inserir(K chave, T elemento);
@@ -26,5 +20,8 @@ public interface iArvores<T,K extends Comparable<K>> {
     public int quantidade(No<T,K> no);
     public int grau(No<T,K> no);
     public int profundidade(No<T,K> no);
-    
+    public void imprimirPosOrdem();
+    public void imprimirPreOrdem();
+    public void imprimirInOrdem();
+    public void imprimirMaiores();
 }
